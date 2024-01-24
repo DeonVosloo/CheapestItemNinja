@@ -1,3 +1,4 @@
+import 'package:cheapest_item_ninja/pages/Home.dart';
 import 'package:flutter/material.dart';
 import 'pages/login.dart';
 
@@ -6,9 +7,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp
+    return const MaterialApp
       (
-      home: Login(),
+      home: HomeScreen(),
     );
   }
 }
