@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView
         (
             children: [
-              CustomCard("Barcode Scanning", BarcodeScannerView()),
+              //CustomCard("Barcode Scanning", BarcodeScannerView()),
               CustomCard("Barcode Scanning Test", TestBarcodeScanner()),
               //Text("Barcode data first barcode raw value: ${widget.barcodesData.first.rawValue}"),
 
