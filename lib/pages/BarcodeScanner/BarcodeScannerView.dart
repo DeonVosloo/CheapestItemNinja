@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:camera/camera.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:flutter/material.dart';
@@ -47,17 +49,30 @@ class _BarcodeScannerViewState extends State<BarcodeScannerView> {
     final barcodes = await _barcodeScanner.processImage(inputImage);
     if (inputImage.metadata?.size != null &&
         inputImage.metadata?.rotation != null) {
+      const AlertDialog
+        (
+        title: Text("Test 123"),
+        content: Text('Scanning image'),
+        actions: [],
+      );
       final painter = BarcodeDetectorPainter(
         barcodes,
         inputImage.metadata!.size,
         inputImage.metadata!.rotation,
         _cameraLensDirection,
+
       );
       _customPaint = CustomPaint(painter: painter);
     } else {
       String text = 'Barcodes found: ${barcodes.length}\n\n';
       for (final barcode in barcodes) {
         text += 'Barcode: ${barcode.rawValue}\n\n';
+        AlertDialog
+          (
+          title: Text("Test 123"),
+          content: Text('Barcode found! ${barcode.rawValue}'),
+          actions: [],
+        );
       }
       _text = text;
       // TODO: set _customPaint to draw boundingRect on top of image

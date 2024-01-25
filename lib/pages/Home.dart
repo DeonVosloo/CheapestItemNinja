@@ -1,15 +1,20 @@
 import 'package:cheapest_item_ninja/pages/BarcodeScanner/BarcodeScannerView.dart';
+import 'package:cheapest_item_ninja/pages/TestBarcodeScanner.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  List<Barcode> barcodesData;
+   HomeScreen({super.key, required this.barcodesData});
+
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView
         (
             children: [
-              CustomCard("Barcode Scanning", BarcodeScannerView())
+              CustomCard("Barcode Scanning", BarcodeScannerView()),
+              CustomCard("Barcode Scanning Test", TestBarcodeScanner()),
+              //Text("Barcode data first barcode raw value: ${widget.barcodesData.first.rawValue}"),
+
+
             ],
       ),
     );
@@ -65,3 +74,4 @@ class CustomCard extends StatelessWidget {
     );
   }
 }
+

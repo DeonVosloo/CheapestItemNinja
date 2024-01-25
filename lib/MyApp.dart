@@ -1,5 +1,4 @@
 import 'package:cheapest_item_ninja/pages/Home.dart';
-import 'package:cheapest_item_ninja/pages/TestBarcodeScanner.dart';
 import 'package:flutter/material.dart';
 import 'pages/login.dart';
 
@@ -10,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp
       (
-      home: HomeScreen(),
+      home: HomeScreen(barcodesData: const [],),
     );
   }
 }

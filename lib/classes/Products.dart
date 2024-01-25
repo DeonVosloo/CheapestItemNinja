@@ -7,9 +7,11 @@ class Products
   String unitOfMeasurement;
   double price;
   double pricePerUnitOfMeasurement;
+  String barcode;
 
 
-  Products(this.id,{required this.category, required this.name, required this.units, required this.unitOfMeasurement, required this.price, required this.pricePerUnitOfMeasurement});
+  Products(this.id,{required this.category, required this.name, required this.units, required this.unitOfMeasurement, required this.price,
+  required this.pricePerUnitOfMeasurement, required this.barcode});
 
   Products.fromMap(Map<String, dynamic> result)
       : id = result["id"],
@@ -18,7 +20,8 @@ class Products
         units = result["units"],
         unitOfMeasurement = result["unitOfMeasurement"],
         price = result["price"],
-        pricePerUnitOfMeasurement = result["pricePerUnitOfMeasurement"];
+        pricePerUnitOfMeasurement = result["pricePerUnitOfMeasurement"],
+        barcode = result["barcode"];
 
   Map<String, Object> toMap() {
     return
@@ -29,6 +32,7 @@ class Products
         'unitOfMeasurement': unitOfMeasurement,
         'price': price,
         'pricePerUnitOfMeasurement': pricePerUnitOfMeasurement,
+        'barcode': barcode,
       };
   }
 
