@@ -10,8 +10,8 @@ class Products
   String barcode;
 
 
-  Products(this.id,{required this.category, required this.name, required this.units, required this.unitOfMeasurement, required this.price,
-  required this.pricePerUnitOfMeasurement, required this.barcode});
+  Products(this.id,this.price, this.pricePerUnitOfMeasurement, {required this.category, required this.name,
+    required this.units, required this.unitOfMeasurement, required this.barcode});
 
   Products.fromMap(Map<String, dynamic> result)
       : id = result["id"],
