@@ -1,12 +1,13 @@
 import 'package:cheapest_item_ninja/pages/BarcodeScanner/BarcodeScannerView.dart';
+import 'package:cheapest_item_ninja/pages/PriceCheckProducts.dart';
 import 'package:cheapest_item_ninja/pages/TestBarcodeScanner.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class HomeScreen extends StatefulWidget {
-  List<Barcode> barcodesData;
-   HomeScreen({super.key, required this.barcodesData});
+
+   const HomeScreen({super.key});
 
 
   @override
@@ -97,7 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox
                     (
                     width: MediaQuery.of(context).size.width * 0.75,
-                    child: ElevatedButton(onPressed: (){},
+                    child: ElevatedButton(onPressed: ()
+                    {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const PriceCheckProducts()));
+                      },
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.greenAccent),),
                       child:
                       FittedBox(

@@ -9,6 +9,7 @@ class Users
   String password;
   String email;
 
+
   Users(this.id,{required this.username, required this.email, required this.password});
 
 
@@ -24,4 +25,12 @@ String encryptPassword(String password)
 
   final Encrypted encrypted = encrypter.encrypt(password, iv: iv);
   return encrypted.toString();
+}
+
+bool checkValidEmail(String email)
+{
+  final bool emailValid =
+  RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(email);
+  return emailValid;
 }

@@ -89,12 +89,34 @@ class _PriceCheckProductsState extends State<PriceCheckProducts> {
 
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children:
+                    [
+
+                    ],
+                  )
 
                 ],
               ),
             ],
           )
-      )
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: (){},
+        tooltip: 'Increment',
+        icon: const Icon(Icons.add),
+        label: FittedBox
+          (
+          fit: BoxFit.scaleDown,
+          child: Text(
+            "Add Product",
+            style: GoogleFonts.bebasNeue(
+                fontSize: 12,
+                color: Colors.black),),
+        ),
+      ),
     );
   }
 }

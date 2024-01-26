@@ -1,3 +1,4 @@
+import 'package:cheapest_item_ninja/pages/AddProduct.dart';
 import 'package:cheapest_item_ninja/pages/Home.dart';
 import 'package:cheapest_item_ninja/pages/TestPage.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +9,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp
+    return const MaterialApp
       (
-      home: HomeScreen(barcodesData: const[],)
+        home: HomeScreen()
     );
   }
 }
