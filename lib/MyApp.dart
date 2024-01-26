@@ -11,7 +11,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp
       (
-        home: HomeScreen()
+      home: AddProduct(barcodesData: [], user: null)
+        //home: HomeScreen()
     );
   }
 }

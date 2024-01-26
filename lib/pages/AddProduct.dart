@@ -1,11 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+
+import '../classes/Users.dart';
 
 class AddProduct extends StatelessWidget {
-  const AddProduct({super.key});
+  final List<Barcode>? barcodesData;
+  final Users? user;
+  const AddProduct({super.key, required this.barcodesData, required this.user});
 
   @override
   Widget build(BuildContext context) {
+
+    TextEditingController productNameController = TextEditingController();
+    TextEditingController unitsController = TextEditingController();
+    TextEditingController priceController = TextEditingController();
+
+    var db = FirebaseFirestore.instance;
+    final categoriesDB = db.collection("Categories");
+    final unitOfMeasurementDB = db.collection("UoM").snapshots();
+    final List<String> categories;
+    final List<String> unitOfMeasurement;
+
     return Scaffold
       (
         appBar:AppBar
@@ -59,9 +76,9 @@ class AddProduct extends StatelessWidget {
           title: FittedBox
             (
             fit: BoxFit.scaleDown,
-            child: Text("Add Product Details",style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.white),),
+            child: Text("Add Product Details",style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.black),),
           ),
-          backgroundColor: Colors.lightBlueAccent[400],
+          backgroundColor: Colors.greenAccent[400],
         ),
 
         body:  Container
@@ -83,15 +100,55 @@ class AddProduct extends StatelessWidget {
                   (
 
                   children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children:
-                      [
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.08,),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.90,
+                      decoration: BoxDecoration
+                        (
+                        border: Border.all
+                          (
+                            width:  MediaQuery.of(context).size.width*0.012,
+                          style: BorderStyle.solid,
+                          color: Colors.black
+                        ),
+                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                        color: Colors.white70
+                      ),
+                      child: Column
+                        (
+                        children: [
+                          FittedBox(
+                            fit: BoxFit.cover,
+                            child: Column
+                              (
+                              children: [
+                                DropdownMenu(dropdownMenuEntries: <>)
+                              ],
+                            )
+                          ),
+                          FittedBox
+                            (
+                            fit: BoxFit.cover,
+                            child: TextField
+                              (
+                              controller: productNameController,
+                              decoration: InputDecoration
+                                (
 
-                      ],
-                    )
+                                labelText: "Enter Product Name",
+                                labelStyle: GoogleFonts.bebasNeue(fontSize: 24),
+                              ),
+                              style: GoogleFonts.ubuntu
+                                (
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.08,),
 
                   ],
                 ),
@@ -102,3 +159,4 @@ class AddProduct extends StatelessWidget {
     );
   }
 }
+

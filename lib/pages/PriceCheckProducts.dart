@@ -1,3 +1,4 @@
+import 'package:cheapest_item_ninja/pages/BarcodeScanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -127,7 +128,10 @@ class _PriceCheckProductsState extends State<PriceCheckProducts> {
           )
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: (){},
+        onPressed: ()
+        {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> TestBarcodeScanner()));
+        },
         tooltip: 'add product',
         label: FittedBox
           (

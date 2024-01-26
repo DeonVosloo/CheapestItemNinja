@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:cheapest_item_ninja/pages/AddProduct.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:flutter/material.dart';
 import 'Home.dart';
@@ -38,8 +39,8 @@ class TestBarcodeScanner extends StatelessWidget {
                    Image(image: MemoryImage(image)),
              );
              Future.delayed(const Duration(seconds: 3), () {
-              //Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen(barcodesData: barcodes)));
-               Navigator.pop(context,barcodes);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AddProduct(barcodesData: barcodes, user: null,)));
+               //Navigator.pop(context,barcodes);
              });
            }
          },

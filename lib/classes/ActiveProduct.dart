@@ -6,9 +6,8 @@ class ActiveProduct extends Product
 
   ActiveProduct(super.id, {required super.price,
     required super.pricePerUnitOfMeasurement,
-    required super.category, required super.quantity,
-    required super.name, required super.units,
-    required super.unitOfMeasurement,
+    required super.category, required super.name,
+    required super.units, required super.unitOfMeasurement,
     required super.barcode,required this.isActive,
     required super.userID});
 

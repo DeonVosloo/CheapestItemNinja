@@ -1,6 +1,5 @@
-import 'package:cheapest_item_ninja/pages/BarcodeScanner/BarcodeScannerView.dart';
 import 'package:cheapest_item_ninja/pages/PriceCheckProducts.dart';
-import 'package:cheapest_item_ninja/pages/TestBarcodeScanner.dart';
+import 'package:cheapest_item_ninja/pages/BarcodeScanner.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
