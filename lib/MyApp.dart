@@ -10,8 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp
       (
-      home: TestingPage()
-      //home: HomeScreen(barcodesData: const [],),
+      home: HomeScreen(barcodesData: const[],)
     );
   }
 }

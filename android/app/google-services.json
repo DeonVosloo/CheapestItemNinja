@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1695891393",
+    "project_id": "cheapestitemninja",
+    "storage_bucket": "cheapestitemninja.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1695891393:android:2f437844785b0c5ad3f940",
+        "android_client_info": {
+          "package_name": "com.example.cheapest_item_ninja"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjxsV077ybCgHZEb-J7n56Fj0BvYM7mUI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

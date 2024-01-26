@@ -20,24 +20,120 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar
         (
-        leading: Container
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context)
+            {
+              return[
+                PopupMenuItem(
+                  value: 0,
+                  child: FittedBox
+                    (
+                    fit: BoxFit.contain,
+                    child: Text(
+                      "Check Product Price",
+                      style: GoogleFonts.bebasNeue(
+                          fontSize: 32,
+                          color: Colors.black),),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 1,
+                  child: FittedBox
+                    (
+                    fit: BoxFit.contain,
+                    child: Text(
+                      "View All products",
+                      style: GoogleFonts.bebasNeue(
+                          fontSize: 32,
+                          color: Colors.black),),
+                  ),
+                ),
+              ];
+            },
+            onSelected: (value)
+            {
+              if(value == 0)
+              {
+
+              }
+              else if(value == 1)
+              {
+
+              }
+
+            },
+          ),
+        ],
+        //titleTextStyle: GoogleFonts.bebasNeue(fontSize: 36),
+        title: FittedBox
           (
+          fit: BoxFit.scaleDown,
+          child: Text("Price Check Ninja",style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.white),),
         ),
-        titleTextStyle: GoogleFonts.ubuntu(fontSize: 36),
-        title: const Text("Item Price Comparing Ninja"),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.lightBlueAccent[400],
       ),
 
-      body: ListView
+      body: Container
         (
+          decoration: const BoxDecoration
+            (
+
+            image: DecorationImage
+              (
+                image:  AssetImage("assets/background.jpg"),
+                fit: BoxFit.fill
+            ),
+          ),
+
+          child: ListView
+            (
             children: [
-              //CustomCard("Barcode Scanning", BarcodeScannerView()),
-              CustomCard("Barcode Scanning Test", TestBarcodeScanner()),
-              //Text("Barcode data first barcode raw value: ${widget.barcodesData.first.rawValue}"),
+              Column
+                (
+
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.25,),
+                  SizedBox
+                    (
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    child: ElevatedButton(onPressed: (){},
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.greenAccent),),
+                      child:
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text("Check price of products",
+                          style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
+
+                  SizedBox
+                    (
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    child: ElevatedButton(onPressed: (){},
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.greenAccent),),
+                      child:
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text("view all products",
+                          style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  //CustomCard("Barcode Scanning Test", TestBarcodeScanner()),
 
 
+                ],
+              ),
             ],
-      ),
+          )
+      )
     );
   }
 }
