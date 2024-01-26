@@ -1,4 +1,4 @@
-class Products
+class Product
 {
   int? id;
   String category;
@@ -10,10 +10,10 @@ class Products
   String barcode;
 
 
-  Products(this.id,this.price, this.pricePerUnitOfMeasurement, {required this.category, required this.name,
+  Product(this.id,this.price, this.pricePerUnitOfMeasurement, {required this.category, required this.name,
     required this.units, required this.unitOfMeasurement, required this.barcode});
 
-  Products.fromMap(Map<String, dynamic> result)
+  Product.fromMap(Map<String, dynamic> result)
       : id = result["id"],
         category = result["category"],
         name = result["name"],

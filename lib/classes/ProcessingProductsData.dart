@@ -1,3 +1,9 @@
+import 'dart:convert';
+
+import 'Products.dart';
+
+APIRawData apiRawDataFromJson(String str) => (json.decode(str).map((x) => APIRawData.fromJson(x)));
+
 class ProcessingProductsData
 {
   int? id;
@@ -26,6 +32,11 @@ class ProcessingProductsData
         success = result["success"],
         brand = result["brand"];
 
+  Product convertToProduct()
+  {
+    return Product(null, 0, 0, category: category, name: name, units: units, unitOfMeasurement: unitOfMeasurement, barcode: barcode);
+  }
+
 }
 
 class APIRawData
@@ -41,15 +52,6 @@ class APIRawData
 
   APIRawData({ required this.category, required this.title, required this.metadata,
     required this.brand, required this.description, required this.barcode, required this.success});
-
-  APIRawData.fromMap(Map<String, dynamic> result)
-      : category = result["category"],
-        title = result["title"],
-        description = result["description"],
-        barcode = result["barcode"],
-        success = result["success"],
-        metadata = result["metadata"],
-        brand = result["brand"];
 
   factory APIRawData.fromJson(Map<String, dynamic> json) {
     return APIRawData(
