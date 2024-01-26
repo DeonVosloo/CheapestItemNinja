@@ -19,61 +19,66 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar
-        (
-        actions: [
-          PopupMenuButton(
-            itemBuilder: (context)
-            {
-              return[
-                PopupMenuItem(
-                  value: 0,
-                  child: FittedBox
-                    (
-                    fit: BoxFit.contain,
-                    child: Text(
-                      "Check Product Price",
-                      style: GoogleFonts.bebasNeue(
-                          fontSize: 32,
-                          color: Colors.black),),
-                  ),
-                ),
-                PopupMenuItem(
-                  value: 1,
-                  child: FittedBox
-                    (
-                    fit: BoxFit.contain,
-                    child: Text(
-                      "View All products",
-                      style: GoogleFonts.bebasNeue(
-                          fontSize: 32,
-                          color: Colors.black),),
-                  ),
-                ),
-              ];
-            },
-            onSelected: (value)
-            {
-              if(value == 0)
-              {
-
-              }
-              else if(value == 1)
-              {
-
-              }
-
-            },
-          ),
-        ],
-        //titleTextStyle: GoogleFonts.bebasNeue(fontSize: 36),
-        title: FittedBox
+        appBar:AppBar
           (
-          fit: BoxFit.scaleDown,
-          child: Text("Price Check Ninja",style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.white),),
+          centerTitle: true,
+          actions: [
+            FittedBox
+              (
+              fit: BoxFit.cover,
+              child: PopupMenuButton(
+                itemBuilder: (context)
+                {
+                  return[
+                    PopupMenuItem(
+                      value: 0,
+                      child: FittedBox
+                        (
+                        fit: BoxFit.contain,
+                        child: Text(
+                          "Price Check Products",
+                          style: GoogleFonts.bebasNeue(
+                              fontSize: 32,
+                              color: Colors.black),),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 1,
+                      child: FittedBox
+                        (
+                        fit: BoxFit.contain,
+                        child: Text(
+                          "View All products",
+                          style: GoogleFonts.bebasNeue(
+                              fontSize: 32,
+                              color: Colors.black),),
+                      ),
+                    ),
+                  ];
+                },
+                onSelected: (value)
+                {
+                  if(value == 0)
+                  {
+
+                  }
+                  else if(value == 1)
+                  {
+
+                  }
+
+                },
+              ),
+            )
+          ],
+
+          title: FittedBox
+            (
+            fit: BoxFit.scaleDown,
+            child: Text("Price Check Products",style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.black),),
+          ),
+          backgroundColor: Colors.greenAccent[400],
         ),
-        backgroundColor: Colors.lightBlueAccent[400],
-      ),
 
       body: Container
         (
