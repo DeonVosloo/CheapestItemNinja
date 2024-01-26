@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:math';
+import 'package:encrypt/encrypt.dart';
+
 class Users
 {
   int? id;
@@ -7,19 +11,17 @@ class Users
 
   Users(this.id,{required this.username, required this.email, required this.password});
 
-  Users.fromMap(Map<String, dynamic> result)
-      : id = result["id"],
-        username = result["username"],
-        email = result["username"],
-        password = result["password"];
 
-  Map<String, Object> toMap() {
-    return
-      {
-        'username': username,
-        'email': email,
-        'password': password,
-      };
-  }
 
+}
+
+String encryptPassword(String password)
+{
+  final key = Key.fromUtf8('awdawd245upcvkxadsklklsado777jcs');
+  final iv = IV.fromLength(16);
+
+  final encrypter = Encrypter(AES(key));
+
+  final Encrypted encrypted = encrypter.encrypt(password, iv: iv);
+  return encrypted.toString();
 }
