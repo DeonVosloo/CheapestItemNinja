@@ -1,5 +1,4 @@
 import 'package:cheapest_item_ninja/pages/BarcodeScanner.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -113,7 +112,7 @@ class _PriceCheckProductsState extends State<PriceCheckProducts> {
 
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children:

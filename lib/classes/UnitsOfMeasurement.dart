@@ -1,7 +1,4 @@
-import 'dart:convert';
-import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:encrypt/encrypt.dart';
 
 class UnitsOfMeasurement
 {
@@ -23,7 +20,7 @@ class UnitsOfMeasurement
 
   Map<String, dynamic> toFirestore() {
     return {
-      if (name != null) "name": name,
+      "name": name,
     };
   }
 

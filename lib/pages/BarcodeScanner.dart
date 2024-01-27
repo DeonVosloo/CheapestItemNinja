@@ -2,7 +2,6 @@ import 'dart:typed_data';
 import 'package:cheapest_item_ninja/pages/AddProduct.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:flutter/material.dart';
-import 'Home.dart';
 
 class TestBarcodeScanner extends StatelessWidget {
    TestBarcodeScanner({super.key});

@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encrypt/encrypt.dart';
 
@@ -29,9 +27,9 @@ class Users
   Map<String, dynamic> toFirestore() {
     return {
       if (id != null) "id": id,
-      if (username != null) "username": username,
-      if (password != null) "password": password,
-      if (email != null) "email": email,
+      "username": username,
+      "password": password,
+      "email": email,
     };
   }
 

@@ -4,8 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:path/path.dart';
 
 import '../classes/Users.dart';
+
+List<Categories> categories=[];
+List<UnitsOfMeasurement> unitsOfMeasurement=[];
 
 class AddProduct extends StatefulWidget {
   final List<Barcode>? barcodesData;
@@ -24,9 +28,9 @@ class _AddProductState extends State<AddProduct> {
     TextEditingController categoriesController = TextEditingController();
     TextEditingController unitsController = TextEditingController();
     TextEditingController priceController = TextEditingController();
+    setCategories();
+    setUnitsOfMeasurement();
 
-    late List<Categories> categories = getCategories() as List<Categories>;
-    final List<String> unitOfMeasurement = getUnitsOfMeasurement() as List<String>;
     Categories? selectedCategory;
     UnitsOfMeasurement selectedUoM;
 
@@ -107,77 +111,74 @@ class _AddProductState extends State<AddProduct> {
                   (
 
                   children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.08,),
+                     SizedBox(height: MediaQuery.of(context).size.height * 0.08,),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.90,
                       decoration: BoxDecoration
                         (
                         border: Border.all
                           (
-                            width:  MediaQuery.of(context).size.width*0.012,
+                            width:  MediaQuery.of(context).size.width*0.001,
                           style: BorderStyle.solid,
                           color: Colors.black
                         ),
-                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                        color: Colors.white70
+                        borderRadius: const BorderRadius.all(Radius.circular(0.2)),
+                        color: Colors.white
                       ),
                       child: Column
                         (
                         children: [
-                           FittedBox(
-                            fit: BoxFit.cover,
-                            child: Column
-                              (
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                DropdownMenu
-                                  (
-                                  controller: categoriesController,
-                                  onSelected: (Categories? category)
-                                    {
-                                        setState(()
-                                        {
-                                          selectedCategory = category;
-                                        });
-                                    },
-                                  enableFilter: true,
-                                  requestFocusOnTap: true,
-                                  label: FittedBox
-                                    (
-                                    fit: BoxFit.cover,
-                                    child: Text("Select Product Category",style: GoogleFonts.ubuntu(fontSize: 16, color: Colors.black),),
-                                  ),
-                                    dropdownMenuEntries:
-                                          categories.map<DropdownMenuEntry<Categories>>(
-                                          (Categories category) {
-                                    return DropdownMenuEntry<Categories>(
-                                    value: category,
-                                    label: category.name,
-                                    );
-                                    },
-                                    ).toList(),
-                                ),
-                              ],
-                            )
-                          ),
-                          FittedBox
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
+                          DropdownMenu
                             (
-                            fit: BoxFit.cover,
-                            child: TextField
-                              (
-                              controller: productNameController,
-                              decoration: InputDecoration
-                                (
-
-                                labelText: "Enter Product Name",
-                                labelStyle: GoogleFonts.bebasNeue(fontSize: 24),
-                              ),
-                              style: GoogleFonts.ubuntu
-                                (
-                                fontSize: 24,
-                              ),
-                            ),
+                            //width: MediaQuery.of(context).size.width *0.0984,
+                            controller: categoriesController,
+                            onSelected: (Categories? category)
+                            {
+                              setState(()
+                              {
+                                selectedCategory = category;
+                              });
+                            },
+                            // enableFilter: true,
+                            // requestFocusOnTap: true,
+                            enabled: true,
+                            width: MediaQuery.of(context).size.width * 0.74,
+                            label:  Text("Select Product Category",style: GoogleFonts.ubuntu(fontSize: 16, color: Colors.black),),
+                            dropdownMenuEntries:
+                            categories.map<DropdownMenuEntry<Categories>>(
+                                  (Categories category) {
+                                return DropdownMenuEntry<Categories>(
+                                  value: category,
+                                  label: category.name,
+                                );
+                              },
+                            ).toList(),
                           ),
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.001,),
+
+                              Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      MediaQuery.of(context).size.width *0.08,
+                                      0,
+                                      MediaQuery.of(context).size.width *0.08,
+                                      0),
+                                child: TextField
+                                  (
+                                  controller: productNameController,
+                                  decoration: InputDecoration
+                                    (
+
+                                    labelText: "Enter Product Name",
+                                    labelStyle: GoogleFonts.bebasNeue(fontSize: 24),
+                                  ),
+                                  style: GoogleFonts.ubuntu
+                                    (
+                                    fontSize: 24,
+                                  ),
+                                ),
+                              ),
+
                           SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
                         ],
                       ),
@@ -195,7 +196,7 @@ class _AddProductState extends State<AddProduct> {
 }
 
 
-Future<List<Categories>> getCategories ()
+void setCategories()
 async {
   var db = FirebaseFirestore.instance;
   final categoriesDB = db.collection("Categories");
@@ -204,35 +205,30 @@ async {
   final ref = categoriesDB.withConverter(fromFirestore: Categories.fromFirestore,
     toFirestore: (Categories categories, _) => categories.toFirestore(),);
   final docSnap = await ref.get();
-  final categories = docSnap.docs;
-  if(categories != null)
+  final tempCategories = docSnap.docs;
+    for (var item in tempCategories)
     {
-      for (var item in categories)
-      {
-        categoriesFinal.add(item.data());
-      }
+      categoriesFinal.add(item.data());
     }
-
-  return categoriesFinal;
+  categories = categoriesFinal;
 }
 
-Future<List<String>> getUnitsOfMeasurement()
+Future<List<UnitsOfMeasurement>> setUnitsOfMeasurement()
 async {
   var db = FirebaseFirestore.instance;
   final UnitsOfMeasurementDB = db.collection("UnitsOfMeasurement");
-  List<String> uoM=[];
+  List<UnitsOfMeasurement> uoM=[];
 
   final ref = UnitsOfMeasurementDB.withConverter(fromFirestore: UnitsOfMeasurement.fromFirestore,
     toFirestore: (UnitsOfMeasurement  unitsOfMeasurement, _) => unitsOfMeasurement.toFirestore(),);
   final docSnap = await ref.get();
-  final unitsOfMeasurement = docSnap.docs;
-  if(unitsOfMeasurement != null)
+  final tempUnitsOfMeasurement = docSnap.docs;
+  for (var item in tempUnitsOfMeasurement)
   {
-    for (var item in unitsOfMeasurement)
-    {
-      uoM.add(item.get("name"));
-    }
+    uoM.add(item.data());
   }
-
+ unitsOfMeasurement = uoM;
   return uoM;
 }
+
+

@@ -1,8 +1,6 @@
 import 'package:cheapest_item_ninja/pages/PriceCheckProducts.dart';
-import 'package:cheapest_item_ninja/pages/BarcodeScanner.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -17,6 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> names;
     return Scaffold(
         appBar:AppBar
           (
@@ -151,24 +150,24 @@ class CustomCard extends StatelessWidget {
   final Widget _viewPage;
   final bool featureCompleted;
 
-  const CustomCard(this._label, this._viewPage, {this.featureCompleted = true});
+  const CustomCard(this._label, this._viewPage, {super.key, this.featureCompleted = true});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      margin: EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 10),
       child: ListTile(
         tileColor: Theme.of(context).primaryColor,
         title: Text(
           _label,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         onTap: () {
           if (!featureCompleted) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content:
-                const Text('This feature has not been implemented yet')));
+                Text('This feature has not been implemented yet')));
           } else {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => _viewPage));

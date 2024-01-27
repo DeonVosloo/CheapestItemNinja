@@ -29,19 +29,19 @@ class ActiveProduct extends Products {
     );
   }
 
+  @override
   Map<String, dynamic> toFirestore() {
     return {
       if (id != null) "id": id,
-      if (category != null) "category": category,
-      if (name != null) "name": name,
-      if (units != null) "units": units,
-      if (unitOfMeasurement != null) "unitOfMeasurement": unitOfMeasurement,
-      if (price != null) "price": price,
-      if (pricePerUnitOfMeasurement !=
-          null) "pricePerUnitOfMeasurement": pricePerUnitOfMeasurement,
-      if (barcode != null) "barcode": barcode,
-      if (userID != null) "userID": userID,
-      if (isActive != null) "isActive": isActive,
+      "category": category,
+      "name": name,
+      "units": units,
+      "unitOfMeasurement": unitOfMeasurement,
+      "price": price,
+      "pricePerUnitOfMeasurement": pricePerUnitOfMeasurement,
+      "barcode": barcode,
+      "userID": userID,
+      "isActive": isActive,
     };
   }
 }
