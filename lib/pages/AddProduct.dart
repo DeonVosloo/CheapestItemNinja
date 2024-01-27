@@ -1,3 +1,5 @@
+import 'package:cheapest_item_ninja/classes/Categories.dart';
+import 'package:cheapest_item_ninja/classes/UnitsOfMeasurement.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,23 +7,28 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../classes/Users.dart';
 
-class AddProduct extends StatelessWidget {
+class AddProduct extends StatefulWidget {
   final List<Barcode>? barcodesData;
   final Users? user;
   const AddProduct({super.key, required this.barcodesData, required this.user});
 
   @override
+  State<AddProduct> createState() => _AddProductState();
+}
+
+class _AddProductState extends State<AddProduct> {
+  @override
   Widget build(BuildContext context) {
 
     TextEditingController productNameController = TextEditingController();
+    TextEditingController categoriesController = TextEditingController();
     TextEditingController unitsController = TextEditingController();
     TextEditingController priceController = TextEditingController();
 
-    var db = FirebaseFirestore.instance;
-    final categoriesDB = db.collection("Categories");
-    final unitOfMeasurementDB = db.collection("UoM").snapshots();
-    final List<String> categories;
-    final List<String> unitOfMeasurement;
+    late List<Categories> categories = getCategories() as List<Categories>;
+    final List<String> unitOfMeasurement = getUnitsOfMeasurement() as List<String>;
+    Categories? selectedCategory;
+    UnitsOfMeasurement selectedUoM;
 
     return Scaffold
       (
@@ -117,12 +124,39 @@ class AddProduct extends StatelessWidget {
                       child: Column
                         (
                         children: [
-                          FittedBox(
+                           FittedBox(
                             fit: BoxFit.cover,
                             child: Column
                               (
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                DropdownMenu(dropdownMenuEntries: <>)
+                                DropdownMenu
+                                  (
+                                  controller: categoriesController,
+                                  onSelected: (Categories? category)
+                                    {
+                                        setState(()
+                                        {
+                                          selectedCategory = category;
+                                        });
+                                    },
+                                  enableFilter: true,
+                                  requestFocusOnTap: true,
+                                  label: FittedBox
+                                    (
+                                    fit: BoxFit.cover,
+                                    child: Text("Select Product Category",style: GoogleFonts.ubuntu(fontSize: 16, color: Colors.black),),
+                                  ),
+                                    dropdownMenuEntries:
+                                          categories.map<DropdownMenuEntry<Categories>>(
+                                          (Categories category) {
+                                    return DropdownMenuEntry<Categories>(
+                                    value: category,
+                                    label: category.name,
+                                    );
+                                    },
+                                    ).toList(),
+                                ),
                               ],
                             )
                           ),
@@ -160,3 +194,45 @@ class AddProduct extends StatelessWidget {
   }
 }
 
+
+Future<List<Categories>> getCategories ()
+async {
+  var db = FirebaseFirestore.instance;
+  final categoriesDB = db.collection("Categories");
+  List<Categories> categoriesFinal=[];
+
+  final ref = categoriesDB.withConverter(fromFirestore: Categories.fromFirestore,
+    toFirestore: (Categories categories, _) => categories.toFirestore(),);
+  final docSnap = await ref.get();
+  final categories = docSnap.docs;
+  if(categories != null)
+    {
+      for (var item in categories)
+      {
+        categoriesFinal.add(item.data());
+      }
+    }
+
+  return categoriesFinal;
+}
+
+Future<List<String>> getUnitsOfMeasurement()
+async {
+  var db = FirebaseFirestore.instance;
+  final UnitsOfMeasurementDB = db.collection("UnitsOfMeasurement");
+  List<String> uoM=[];
+
+  final ref = UnitsOfMeasurementDB.withConverter(fromFirestore: UnitsOfMeasurement.fromFirestore,
+    toFirestore: (UnitsOfMeasurement  unitsOfMeasurement, _) => unitsOfMeasurement.toFirestore(),);
+  final docSnap = await ref.get();
+  final unitsOfMeasurement = docSnap.docs;
+  if(unitsOfMeasurement != null)
+  {
+    for (var item in unitsOfMeasurement)
+    {
+      uoM.add(item.get("name"));
+    }
+  }
+
+  return uoM;
+}
