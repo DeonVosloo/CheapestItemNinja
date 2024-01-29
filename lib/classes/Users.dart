@@ -3,7 +3,7 @@ import 'package:encrypt/encrypt.dart';
 
 class Users
 {
-  String? id;
+  String id;
   String username;
   String password;
   String email;

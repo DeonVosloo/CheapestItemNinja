@@ -1,20 +1,24 @@
+import 'package:cheapest_item_ninja/classes/ActiveProduct.dart';
 import 'package:cheapest_item_ninja/classes/Categories.dart';
-import 'package:cheapest_item_ninja/classes/UnitsOfMeasurement.dart';
+import 'package:cheapest_item_ninja/classes/Products.dart';
+import 'package:cheapest_item_ninja/pages/Home.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:path/path.dart';
 
 import '../classes/Users.dart';
 
 List<Categories> categories=[];
-List<UnitsOfMeasurement> unitsOfMeasurement=[];
+double convertedUnits=0;
+TextEditingController unitOfMeasurementController = TextEditingController();
 
 class AddProduct extends StatefulWidget {
-  final List<Barcode>? barcodesData;
-  final Users? user;
-  const AddProduct({super.key, required this.barcodesData, required this.user});
+  final String? barcode;
+  final Users user;
+  final List<Categories> categoriesReceived;
+  const AddProduct({super.key, required this.barcode, required this.user,required this.categoriesReceived});
 
   @override
   State<AddProduct> createState() => _AddProductState();
@@ -28,11 +32,10 @@ class _AddProductState extends State<AddProduct> {
     TextEditingController categoriesController = TextEditingController();
     TextEditingController unitsController = TextEditingController();
     TextEditingController priceController = TextEditingController();
-    setCategories();
-    setUnitsOfMeasurement();
 
-    Categories? selectedCategory;
-    UnitsOfMeasurement selectedUoM;
+    categories = widget.categoriesReceived;
+
+
 
     return Scaffold
       (
@@ -118,33 +121,45 @@ class _AddProductState extends State<AddProduct> {
                         (
                         border: Border.all
                           (
-                            width:  MediaQuery.of(context).size.width*0.001,
+                            width:  MediaQuery.of(context).size.width*0.002,
                           style: BorderStyle.solid,
-                          color: Colors.black
+                          color: Colors.greenAccent
                         ),
-                        borderRadius: const BorderRadius.all(Radius.circular(0.2)),
+                        borderRadius: const BorderRadius.all(Radius.circular(25)),
                         color: Colors.white
                       ),
                       child: Column
                         (
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.04,),
+                          FittedBox
+                            (
+                            fit: BoxFit.contain,
+                            child: Text(
+                              "Add Product",
+                              style: GoogleFonts.bebasNeue(
+                                  fontSize: 32,
+                                  color: Colors.black),),
+                          ),
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
                           DropdownMenu
                             (
                             //width: MediaQuery.of(context).size.width *0.0984,
-                            controller: categoriesController,
+                            //controller: categoriesController,
                             onSelected: (Categories? category)
                             {
                               setState(()
                               {
-                                selectedCategory = category;
+                                linkSelectedCategoryToUoM(category,categoriesController);
                               });
                             },
                             // enableFilter: true,
                             // requestFocusOnTap: true,
                             enabled: true,
                             width: MediaQuery.of(context).size.width * 0.74,
-                            label:  Text("Select Product Category",style: GoogleFonts.ubuntu(fontSize: 16, color: Colors.black),),
+                            label:  Text("Select Product Category",style: GoogleFonts.ubuntu(fontSize: 24, color: Colors.black),),
+                            textStyle: GoogleFonts.ubuntu(fontSize: 24, color: Colors.black),
                             dropdownMenuEntries:
                             categories.map<DropdownMenuEntry<Categories>>(
                                   (Categories category) {
@@ -155,6 +170,7 @@ class _AddProductState extends State<AddProduct> {
                               },
                             ).toList(),
                           ),
+
                           SizedBox(height: MediaQuery.of(context).size.height * 0.001,),
 
                               Padding(
@@ -170,7 +186,7 @@ class _AddProductState extends State<AddProduct> {
                                     (
 
                                     labelText: "Enter Product Name",
-                                    labelStyle: GoogleFonts.bebasNeue(fontSize: 24),
+                                    labelStyle: GoogleFonts.ubuntu(fontSize: 24),
                                   ),
                                   style: GoogleFonts.ubuntu
                                     (
@@ -180,6 +196,119 @@ class _AddProductState extends State<AddProduct> {
                               ),
 
                           SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
+
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                MediaQuery.of(context).size.width *0.08,
+                                0,
+                                MediaQuery.of(context).size.width *0.08,
+                                0),
+                            child: TextField
+                              (
+                              inputFormatters: <TextInputFormatter>
+                              [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
+                              controller: unitsController,
+                              decoration: InputDecoration
+                                (
+
+                                labelText: "Enter Product Units/weight",
+                                labelStyle: GoogleFonts.ubuntu(fontSize: 24),
+                              ),
+                              style: GoogleFonts.ubuntu
+                                (
+                                fontSize: 24,
+                              ),
+
+                            ),
+                          ),
+
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.03,),
+
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                MediaQuery.of(context).size.width *0.08,
+                                0,
+                                MediaQuery.of(context).size.width *0.08,
+                                0),
+                            child: TextField
+                              (
+                              controller: unitOfMeasurementController,
+                              readOnly: true,
+                              decoration: InputDecoration
+                                (
+
+                                labelText: "Product Unit of Measurement",
+                                labelStyle: GoogleFonts.ubuntu(fontSize: 24),
+                              ),
+                              style: GoogleFonts.ubuntu
+                                (
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
+
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                MediaQuery.of(context).size.width *0.08,
+                                0,
+                                MediaQuery.of(context).size.width *0.08,
+                                0),
+                            child: TextField
+                              (
+                              inputFormatters: <TextInputFormatter>
+                              [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
+                              controller: priceController,
+                              enabled: true,
+                              decoration: InputDecoration
+                                (
+
+                                labelText: "Price of product",
+                                labelStyle: GoogleFonts.ubuntu(fontSize: 24),
+                              ),
+                              style: GoogleFonts.ubuntu
+                                (
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.04,),
+
+                          SizedBox
+                            (
+                            width: MediaQuery.of(context).size.width * 0.55,
+                            child: ElevatedButton
+                              (
+                              onPressed: (){addProductToDB(widget.barcode, categoriesController,
+                                productNameController, unitsController, priceController
+                                , widget.user.id);
+
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Testing"),
+                                      content: Text("barcode: ${widget.barcode}"),
+
+                                    );
+                                  });
+
+                              //Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen()));
+                              },
+
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.greenAccent),),
+                              child:
+                              FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text("Add Product",
+                                  style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.08,),
                         ],
                       ),
                     ),
@@ -195,40 +324,106 @@ class _AddProductState extends State<AddProduct> {
   }
 }
 
+void linkSelectedCategoryToUoM(Categories? categories, TextEditingController controller)
+{
+  unitOfMeasurementController = controller;
+  unitOfMeasurementController.text = categories!.unitOfMeasurement;
 
-void setCategories()
-async {
-  var db = FirebaseFirestore.instance;
-  final categoriesDB = db.collection("Categories");
-  List<Categories> categoriesFinal=[];
-
-  final ref = categoriesDB.withConverter(fromFirestore: Categories.fromFirestore,
-    toFirestore: (Categories categories, _) => categories.toFirestore(),);
-  final docSnap = await ref.get();
-  final tempCategories = docSnap.docs;
-    for (var item in tempCategories)
-    {
-      categoriesFinal.add(item.data());
-    }
-  categories = categoriesFinal;
 }
 
-Future<List<UnitsOfMeasurement>> setUnitsOfMeasurement()
-async {
-  var db = FirebaseFirestore.instance;
-  final UnitsOfMeasurementDB = db.collection("UnitsOfMeasurement");
-  List<UnitsOfMeasurement> uoM=[];
+void addProductToDB(String? barcode,
+    TextEditingController category,
+    TextEditingController productName,
+    TextEditingController units,
+    TextEditingController price,
+    String userID) async
+{
 
-  final ref = UnitsOfMeasurementDB.withConverter(fromFirestore: UnitsOfMeasurement.fromFirestore,
-    toFirestore: (UnitsOfMeasurement  unitsOfMeasurement, _) => unitsOfMeasurement.toFirestore(),);
-  final docSnap = await ref.get();
-  final tempUnitsOfMeasurement = docSnap.docs;
-  for (var item in tempUnitsOfMeasurement)
+  var db = FirebaseFirestore.instance;
+  final products = db.collection('Products');
+  final activeProducts = db.collection('ActiveProducts');
+  final PricePerUoM = calculatePricePerUoM(units.text as double,
+      price.text as double, unitOfMeasurementController.text);
+
+  final Products product = Products(id: "", price: price.text as double,
+      pricePerUnitOfMeasurement: calculatePricePerUoM(units.text as double,
+          price.text as double, unitOfMeasurementController.text),
+      category: category.text, name: productName.text,
+      units: units.text as double, unitOfMeasurement: unitOfMeasurementController.text,
+      barcode: barcode as String, userID: userID);
+
+  final ActiveProduct activeProduct = ActiveProduct(id: "", price: price.text as double,
+      pricePerUnitOfMeasurement: calculatePricePerUoM(units.text as double,
+          price.text as double, unitOfMeasurementController.text),
+      category: category.text, name: productName.text,
+      units: units.text as double, unitOfMeasurement: unitOfMeasurementController.text,
+      barcode: barcode, userID: userID, isActive: true);
+  final productDataSet = <String, dynamic>{
+    "id": product.id,
+    "category": product.category,
+    "name": product.name,
+    "units": product.units,
+    "unitOfMeasurement": product.unitOfMeasurement,
+    "price": product.price,
+    "pricePerUnitOfMeasurement": product.pricePerUnitOfMeasurement,
+    "barcode": product.barcode,
+    "userID": product.userID,
+  };
+  final activeProductDataSet = <String, dynamic>{
+    "id": activeProduct.id,
+    "category": activeProduct.category,
+    "name": activeProduct.name,
+    "units": activeProduct.units,
+    "unitOfMeasurement": activeProduct.unitOfMeasurement,
+    "price": activeProduct.price,
+    "pricePerUnitOfMeasurement": activeProduct.pricePerUnitOfMeasurement,
+    "barcode": activeProduct.barcode,
+    "userID": activeProduct.userID,
+    "isActive": activeProduct.isActive,
+
+  };
+
+  // String? id;
+  // String category;
+  // String name;
+  // double units;
+  // String unitOfMeasurement;
+  // double price;
+  // double pricePerUnitOfMeasurement;
+  // String barcode;
+  // String userID;
+
+
+
+  products.doc().set(productDataSet);
+  activeProducts.doc().set(activeProductDataSet);
+}
+
+double calculatePricePerUoM(double units,
+    double price, String unitOfMeasurement)
+{
+  if(unitOfMeasurement.toLowerCase() == "g")
   {
-    uoM.add(item.data());
+    convertedUnits = units /1000;
+    return price / convertedUnits;
   }
- unitsOfMeasurement = uoM;
-  return uoM;
+  else if(unitOfMeasurement.toLowerCase() == "kg")
+  {
+    convertedUnits = units;
+    return price / units;
+  }
+  else if(unitOfMeasurement.toLowerCase() == "l")
+  {
+    convertedUnits = units;
+    return price / units;
+  }
+  else if(unitOfMeasurement.toLowerCase() == "ea")
+  {
+    convertedUnits = units;
+    return price / units;
+  }
+  return 0;
 }
+
 
 

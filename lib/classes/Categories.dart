@@ -3,9 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Categories
 {
   String name;
+  String unitOfMeasurement;
 
 
-  Categories({required this.name,});
+  Categories({required this.name, required this.unitOfMeasurement});
 
   factory Categories.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -14,6 +15,7 @@ class Categories
     final data = snapshot.data();
     return Categories(
       name: data?['name'],
+      unitOfMeasurement: data?['unitOfMeasurement']
 
     );
   }
@@ -21,6 +23,7 @@ class Categories
   Map<String, dynamic> toFirestore() {
     return {
       "name": name,
+      "unitOfMeasurement": unitOfMeasurement,
     };
   }
 

@@ -30,7 +30,7 @@ class _TestingPageState extends State<TestingPage> {
       "population": 860000,
       "regions": ["west_coast", "norcal"]
     };
-    cities.doc("VSKGTEA6X1UOpEJFY0YZ").set(data1);
+    cities.doc().set(data1);
 
 
     return Scaffold
