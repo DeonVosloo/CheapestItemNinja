@@ -1,3 +1,4 @@
+import 'package:cheapest_item_ninja/classes/Products.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -21,16 +22,23 @@ class _TestingPageState extends State<TestingPage> {
 
     var db = FirebaseFirestore.instance;
 
-    final cities = db.collection('cities');
-    final data1 = <String, dynamic>{
-      "name": "San Francisco",
-      "state": "CA",
-      "country": "USA",
-      "capital": false,
-      "population": 860000,
-      "regions": ["west_coast", "norcal"]
-    };
-    cities.doc().set(data1);
+    final products = db.collection('products');
+    Products product = Products
+      (id: "", price: 50,
+        pricePerUnitOfMeasurement: 100,
+        category: "cheese", name: "Gouda", units: 500,
+        unitOfMeasurement: "g", barcode: "6001051003884",
+        userID: "testing");
+    // final data1 = <String, dynamic>{
+    //   "name": "San Francisco",
+    //   "state": "CA",
+    //   "country": "USA",
+    //   "capital": false,
+    //   "population": 860000,
+    //   "regions": ["west_coast", "norcal"]
+    // };
+    final data = product.toFirestore();
+    products.doc().set(data);
 
 
     return Scaffold
