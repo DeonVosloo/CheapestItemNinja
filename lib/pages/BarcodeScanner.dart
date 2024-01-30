@@ -8,14 +8,15 @@ import 'package:flutter/material.dart';
 import '../classes/Categories.dart';
 
 List<Categories> categories= [];
-class TestBarcodeScanner extends StatefulWidget {
-   const TestBarcodeScanner({super.key});
+class BarcodeScanner extends StatefulWidget {
+  final Users user;
+   const BarcodeScanner({super.key, required this.user});
 
   @override
-  State<TestBarcodeScanner> createState() => _TestBarcodeScannerState();
+  State<BarcodeScanner> createState() => _BarcodeScannerState();
 }
 
-class _TestBarcodeScannerState extends State<TestBarcodeScanner> {
+class _BarcodeScannerState extends State<BarcodeScanner> {
   MobileScannerController cameraController = MobileScannerController();
 
 
@@ -50,7 +51,7 @@ class _TestBarcodeScannerState extends State<TestBarcodeScanner> {
              );
              Future.delayed(const Duration(seconds: 5), () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AddProduct(barcode: barcodes.first.rawValue,
-                user: Users(id: "testing",username: "testing", password: "test", email: "test"),
+                currentUser: Users(id: "testing",username: "testing", password: "test", email: "test"),
                 categoriesReceived: categories,)));
                //Navigator.pop(context,barcodes);
              });
