@@ -6,7 +6,6 @@ import '../classes/ActiveProduct.dart';
 import '../classes/Users.dart';
 import 'Home.dart';
 
-late final Users user;
 class ViewAllProducts extends StatefulWidget {
   final Users currentUser;
   const ViewAllProducts({super.key, required this.currentUser});
@@ -17,13 +16,13 @@ class ViewAllProducts extends StatefulWidget {
 
 class _PriceCheckProductsState extends State<ViewAllProducts> {
 
+
   final Stream<QuerySnapshot> activeProductsStream =
   FirebaseFirestore.instance.collection('ActiveProducts').snapshots();
 
   @override
   Widget build(BuildContext context) {
-
-    getUser(widget.currentUser);
+    Users user = getUser(widget.currentUser);
 
     // ActiveProduct prod = ActiveProduct(price: 97,
     //     pricePerUnitOfMeasurement: 2.69, category: "Eggs", name: "Egga eggs", units: 36, unitOfMeasurement: "ea", barcode: "6001509812228", isActive: true, userID: "testing");
@@ -361,7 +360,7 @@ class _PriceCheckProductsState extends State<ViewAllProducts> {
 }
 
 
-void getUser(Users currentUser)
+Users getUser(Users currentUser)
 {
-  user = currentUser;
+  return currentUser;
 }

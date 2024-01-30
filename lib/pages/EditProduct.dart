@@ -16,18 +16,17 @@ String? selectedCategory ="not selected";
 String? selectUnitOfMeasurement;
 TextEditingController unitOfMeasurementController = TextEditingController();
 
-class AddProduct extends StatefulWidget {
+class EditProduct extends StatefulWidget {
   final String? barcode;
   final Users user;
   final List<Categories> categoriesReceived;
-  const AddProduct({super.key, required this.barcode, required this.user,required this.categoriesReceived});
+  const EditProduct({super.key, required this.barcode, required this.user,required this.categoriesReceived});
 
   @override
-  State<AddProduct> createState() => _AddProductState();
-
+  State<EditProduct> createState() => _AddProductState();
 }
 
-class _AddProductState extends State<AddProduct> {
+class _AddProductState extends State<EditProduct> {
   @override
   Widget build(BuildContext context) {
 
