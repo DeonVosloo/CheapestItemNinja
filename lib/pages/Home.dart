@@ -1,3 +1,5 @@
+import 'package:cheapest_item_ninja/classes/ActiveProduct.dart';
+import 'package:cheapest_item_ninja/classes/Users.dart';
 import 'package:cheapest_item_ninja/pages/PriceCheckProducts.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -103,12 +105,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: MediaQuery.of(context).size.width * 0.75,
                     child: ElevatedButton(onPressed: ()
                     {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const PriceCheckProducts()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> PriceCheckProducts(
+                          currentUser: Users(id: "testing",email: "",password: "", username: "" ),)));
                       },
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.greenAccent),),
                       child:
                       FittedBox(
-                        fit: BoxFit.scaleDown,
+                        fit: BoxFit.cover,
                         child: Text("Check price of products",
                           style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.black),
                         ),
@@ -125,13 +128,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.greenAccent),),
                       child:
                       FittedBox(
-                        fit: BoxFit.scaleDown,
+                        fit: BoxFit.cover,
                         child: Text("view all products",
                           style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.black),
                         ),
                       ),
                     ),
                   ),
+
 
                   //CustomCard("Barcode Scanning Test", TestBarcodeScanner()),
 

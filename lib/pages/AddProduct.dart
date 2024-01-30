@@ -13,6 +13,7 @@ import '../classes/Users.dart';
 List<Categories> categories=[];
 double convertedUnits=0;
 String? selectedCategory ="not selected";
+String? selectUnitOfMeasurement;
 TextEditingController unitOfMeasurementController = TextEditingController();
 
 class AddProduct extends StatefulWidget {
@@ -345,13 +346,13 @@ void addProductToDB(String? barcode,
   final Products product = Products(price: price,
       pricePerUnitOfMeasurement: PricePerUoM,
       category: category, name: productName,
-      units: units, unitOfMeasurement: unitOfMeasurementController.text,
+      units: units, unitOfMeasurement: selectUnitOfMeasurement as String,
       barcode: barcode as String);
 
   final ActiveProduct activeProduct = ActiveProduct(price: price,
       pricePerUnitOfMeasurement: PricePerUoM,
       category: category, name: productName,
-      units: units, unitOfMeasurement: unitOfMeasurementController.text,
+      units: units, unitOfMeasurement: selectUnitOfMeasurement as String,
       barcode: barcode, userID: userID, isActive: true);
 
   //try and catch blocks was added to prevent no element exception when finding document ID and there is no elements
@@ -396,21 +397,25 @@ double calculatePricePerUoM(double units,
 {
   if(unitOfMeasurement.toLowerCase() == "g")
   {
+    selectUnitOfMeasurement ="kg";
     convertedUnits = units /1000;
     return price / convertedUnits;
   }
   else if(unitOfMeasurement.toLowerCase() == "kg")
   {
+    selectUnitOfMeasurement ="kg";
     convertedUnits = units;
     return price / units;
   }
   else if(unitOfMeasurement.toLowerCase() == "l")
   {
+    selectUnitOfMeasurement ="l";
     convertedUnits = units;
     return price / units;
   }
   else if(unitOfMeasurement.toLowerCase() == "ea")
   {
+    selectUnitOfMeasurement ="ea";
     convertedUnits = units;
     return price / units;
   }
