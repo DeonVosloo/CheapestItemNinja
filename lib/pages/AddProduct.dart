@@ -12,6 +12,7 @@ import '../classes/Users.dart';
 
 List<Categories> categories=[];
 double convertedUnits=0;
+String? selectedCategory ="not selected";
 TextEditingController unitOfMeasurementController = TextEditingController();
 
 class AddProduct extends StatefulWidget {
@@ -34,8 +35,6 @@ class _AddProductState extends State<AddProduct> {
     TextEditingController priceController = TextEditingController();
 
     categories = widget.categoriesReceived;
-
-
 
     return Scaffold
       (
@@ -281,13 +280,11 @@ class _AddProductState extends State<AddProduct> {
                             width: MediaQuery.of(context).size.width * 0.55,
                             child: ElevatedButton
                               (
-                              onPressed: (){addProductToDB(widget.barcode, categoriesController.text,
+                              onPressed: (){addProductToDB(widget.barcode, selectedCategory as String,
                                 productNameController.text, double.parse(unitsController.text), double.parse(priceController.text)
                                 , widget.user.id);
 
-                              Future.delayed(const Duration(seconds: 5), () {
                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const HomeScreen()));
-                              });
 
                               },
 
@@ -321,6 +318,7 @@ void linkSelectedCategoryToUoM(Categories? categories, TextEditingController con
 {
   unitOfMeasurementController = controller;
   unitOfMeasurementController.text = categories!.unitOfMeasurement;
+  selectedCategory = categories.name;
 
 }
 
@@ -332,62 +330,65 @@ void addProductToDB(String? barcode,
     String userID) async
 {
 
+  bool productPassed = false;
+  bool activeProductPassed = false;
   var db = FirebaseFirestore.instance;
-  final products = db.collection('Products');
-  final activeProducts = db.collection('ActiveProducts');
+  final productsRef = db.collection('Products');
+  final productsQuery = productsRef.where("barcode", isEqualTo: barcode).limit(1);
+  String? productDocID;
+  final activeProductsRef = db.collection('ActiveProducts');
+  final activeProductsQuery = activeProductsRef.where("barcode", isEqualTo: barcode).where("userID", isEqualTo: userID).limit(1);
+  String? activeProductsDocID;
   final PricePerUoM = calculatePricePerUoM(units,
       price, unitOfMeasurementController.text);
 
-  final Products product = Products(id: "", price: price,
+  final Products product = Products(price: price,
       pricePerUnitOfMeasurement: PricePerUoM,
       category: category, name: productName,
       units: units, unitOfMeasurement: unitOfMeasurementController.text,
-      barcode: barcode as String, userID: userID);
+      barcode: barcode as String);
 
-  final ActiveProduct activeProduct = ActiveProduct(id: "", price: price,
+  final ActiveProduct activeProduct = ActiveProduct(price: price,
       pricePerUnitOfMeasurement: PricePerUoM,
       category: category, name: productName,
       units: units, unitOfMeasurement: unitOfMeasurementController.text,
       barcode: barcode, userID: userID, isActive: true);
 
-  // final productDataSet = <String, dynamic>{
-  //   "id": product.id,
-  //   "category": product.category,
-  //   "name": product.name,
-  //   "units": product.units,
-  //   "unitOfMeasurement": product.unitOfMeasurement,
-  //   "price": product.price,
-  //   "pricePerUnitOfMeasurement": product.pricePerUnitOfMeasurement,
-  //   "barcode": product.barcode,
-  //   "userID": product.userID,
-  // };
-  // final activeProductDataSet = <String, dynamic>{
-  //   "id": activeProduct.id,
-  //   "category": activeProduct.category,
-  //   "name": activeProduct.name,
-  //   "units": activeProduct.units,
-  //   "unitOfMeasurement": activeProduct.unitOfMeasurement,
-  //   "price": activeProduct.price,
-  //   "pricePerUnitOfMeasurement": activeProduct.pricePerUnitOfMeasurement,
-  //   "barcode": activeProduct.barcode,
-  //   "userID": activeProduct.userID,
-  //   "isActive": activeProduct.isActive,
-  //
-  // };
+  //try and catch blocks was added to prevent no element exception when finding document ID and there is no elements
+  try// first try catch is to check if there is an element in products
+  {
+    productDocID = await productsQuery.get().then((value) => value.docs.firstOrNull?.id);
+    productsRef.doc(productDocID).set(product.toFirestore());
+    productPassed = true;
 
-  final testProduct = db.collection('Products');
-  Products testproduct = Products
-    (id: "", price: 50,
-      pricePerUnitOfMeasurement: 100,
-      category: "cheese", name: "Gouda", units: 500,
-      unitOfMeasurement: "g", barcode: "6001051003884",
-      userID: "testing");
+    try //second try catch is to check if there is an element in activeProducts that matches as activeProducts is linked to an specific user
+    {
+      activeProductsDocID = await activeProductsQuery.get().then((value) => value.docs.firstOrNull?.id );
+      activeProductsRef.doc(activeProductsDocID).set(activeProduct.toFirestore());
+      productPassed = true;
+      return;
+    }
+    catch(e)
+    {
+      print(e);
+    }
 
-  final data = testproduct.toFirestore();
-  testProduct.doc().set(data);
+  }
+  catch(e)
+  {
+    print(e);
+  }
 
-  products.doc().set(product.toFirestore());
-  activeProducts.doc().set(activeProduct.toFirestore());
+  if(productPassed == false && activeProductPassed == false)
+    {
+      productsRef.doc().set(product.toFirestore());
+      activeProductsRef.doc().set(activeProduct.toFirestore());
+    }
+  else if(productPassed == true && activeProductPassed == false)
+    {
+      activeProductsRef.doc().set(activeProduct.toFirestore());
+    }
+
 }
 
 double calculatePricePerUoM(double units,

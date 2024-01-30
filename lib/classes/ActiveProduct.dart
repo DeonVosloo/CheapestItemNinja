@@ -3,20 +3,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ActiveProduct extends Products {
   bool isActive;
+  String userID;
 
-  ActiveProduct({required super.id, required super.price,
+  ActiveProduct({required super.price,
     required super.pricePerUnitOfMeasurement,
     required super.category, required super.name,
     required super.units, required super.unitOfMeasurement,
     required super.barcode, required this.isActive,
-    required super.userID});
+    required this.userID});
 
   factory ActiveProduct.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
       SnapshotOptions? options,) {
     final data = snapshot.data();
     return ActiveProduct(
-      id: data?['id'],
       category: data?['category'],
       name: data?['name'],
       units: data?['units'],
@@ -32,7 +32,6 @@ class ActiveProduct extends Products {
   @override
   Map<String, dynamic> toFirestore() {
     return {
-      if (id != null) "id": id,
       "category": category,
       "name": name,
       "units": units,

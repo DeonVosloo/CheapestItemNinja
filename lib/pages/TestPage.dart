@@ -2,6 +2,7 @@ import 'package:cheapest_item_ninja/classes/Products.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+late String docID;
 
 class TestingPage extends StatefulWidget {
   const TestingPage({super.key});
@@ -22,23 +23,20 @@ class _TestingPageState extends State<TestingPage> {
 
     var db = FirebaseFirestore.instance;
 
-    final products = db.collection('products');
-    Products product = Products
-      (id: "", price: 50,
-        pricePerUnitOfMeasurement: 100,
-        category: "cheese", name: "Gouda", units: 500,
-        unitOfMeasurement: "g", barcode: "6001051003884",
-        userID: "testing");
-    // final data1 = <String, dynamic>{
-    //   "name": "San Francisco",
-    //   "state": "CA",
-    //   "country": "USA",
-    //   "capital": false,
-    //   "population": 860000,
-    //   "regions": ["west_coast", "norcal"]
-    // };
-    final data = product.toFirestore();
-    products.doc().set(data);
+    // final products = db.collection('products');
+    // Products product = Products
+    //   (id: "", price: 50,
+    //     pricePerUnitOfMeasurement: 100,
+    //     category: "cheese", name: "Gouda", units: 500,
+    //     unitOfMeasurement: "g", barcode: "6001051003884");
+    //
+    // final data = product.toFirestore();
+    // products.doc().set(data);
+
+    final productsRef = db.collection('Products');
+    final productsQuery = productsRef.where("barcode", isEqualTo: 6001051003884).limit(1);
+
+
 
 
     return Scaffold
@@ -55,6 +53,17 @@ class _TestingPageState extends State<TestingPage> {
 
           ElevatedButton(onPressed: ()
           {
+            showDialog
+              (
+                context: context,
+                builder: (BuildContext context){
+                  return AlertDialog
+                    (
+                    title: Text("Testing"),
+                    content: Text("Document ID: ${docID}"),
+                  );
+                }
+            );
             // CollectionReference collReff = FirebaseFirestore.instance.collection('test');
             // collReff.add(
             //     {
