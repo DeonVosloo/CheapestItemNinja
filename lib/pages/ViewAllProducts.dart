@@ -7,15 +7,15 @@ import '../classes/Users.dart';
 import 'Home.dart';
 
 late final Users user;
-class PriceCheckProducts extends StatefulWidget {
+class ViewAllProducts extends StatefulWidget {
   final Users currentUser;
-  const PriceCheckProducts({super.key, required this.currentUser});
+  const ViewAllProducts({super.key, required this.currentUser});
 
   @override
-  State<PriceCheckProducts> createState() => _PriceCheckProductsState();
+  State<ViewAllProducts> createState() => _PriceCheckProductsState();
 }
 
-class _PriceCheckProductsState extends State<PriceCheckProducts> {
+class _PriceCheckProductsState extends State<ViewAllProducts> {
 
   final Stream<QuerySnapshot> activeProductsStream =
   FirebaseFirestore.instance.collection('ActiveProducts').snapshots();
@@ -173,62 +173,62 @@ class _PriceCheckProductsState extends State<PriceCheckProducts> {
                       children: [
                       FittedBox
                       (
-                      fit: BoxFit.cover,
-                      child: Text(
-                      "Product Name: ",
-                      style: GoogleFonts.bebasNeue(
-                      fontSize: 24,
-                      color: Colors.black),),
+                        fit: BoxFit.cover,
+                        child: Text(
+                        "Product Name: ",
+                        style: GoogleFonts.bebasNeue(
+                        fontSize: 24,
+                        color: Colors.black),),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
                       FittedBox
                       (
-                      fit: BoxFit.cover,
-                      child: Text(
-                      "Product Category: ",
-                      style: GoogleFonts.bebasNeue(
-                      fontSize: 24,
-                      color: Colors.black),),
+                        fit: BoxFit.cover,
+                        child: Text(
+                        "Product Category: ",
+                        style: GoogleFonts.bebasNeue(
+                        fontSize: 24,
+                        color: Colors.black),),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
                       FittedBox
                       (
-                      fit: BoxFit.cover,
-                      child: Text(
-                      "Product Units: ",
-                      style: GoogleFonts.bebasNeue(
-                      fontSize: 24,
-                      color: Colors.black),),
+                        fit: BoxFit.cover,
+                        child: Text(
+                        "Product Units: ",
+                        style: GoogleFonts.bebasNeue(
+                        fontSize: 24,
+                        color: Colors.black),),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
                       FittedBox
                       (
-                      fit: BoxFit.cover,
-                      child: Text(
-                      "Product UoM: ",
-                      style: GoogleFonts.bebasNeue(
-                      fontSize: 24,
-                      color: Colors.black),),
+                        fit: BoxFit.cover,
+                        child: Text(
+                        "Product UoM: ",
+                        style: GoogleFonts.bebasNeue(
+                        fontSize: 24,
+                        color: Colors.black),),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
                       FittedBox
                       (
-                      fit: BoxFit.cover,
-                      child: Text(
-                      "Product Price: ",
-                      style: GoogleFonts.bebasNeue(
-                      fontSize: 24,
-                      color: Colors.black),),
+                        fit: BoxFit.cover,
+                        child: Text(
+                        "Product Price: ",
+                        style: GoogleFonts.bebasNeue(
+                        fontSize: 24,
+                        color: Colors.black),),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
                       FittedBox
                       (
-                      fit: BoxFit.cover,
-                      child: Text(
-                      "R per UoM: ",
-                      style: GoogleFonts.bebasNeue(
-                      fontSize: 24,
-                      color: Colors.black),),
+                        fit: BoxFit.cover,
+                        child: Text(
+                        "R per UoM: ",
+                        style: GoogleFonts.bebasNeue(
+                        fontSize: 24,
+                        color: Colors.black),),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
                       ],
@@ -239,82 +239,82 @@ class _PriceCheckProductsState extends State<PriceCheckProducts> {
                       children: [
                       FittedBox
                       (
-                      fit: BoxFit.cover,
-                      child: Text(
-                      "${data['name']}",
-                      style: GoogleFonts.bebasNeue(
-                      fontSize: 24,
-                      color: Colors.black),),
+                        fit: BoxFit.cover,
+                        child: Text(
+                        "${data['name']}",
+                        style: GoogleFonts.bebasNeue(
+                        fontSize: 24,
+                        color: Colors.black),),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
                       FittedBox
                       (
-                      fit: BoxFit.cover,
-                      child: Text(
-                      "${data['category']}",
-                      style: GoogleFonts.bebasNeue(
-                      fontSize: 24,
-                      color: Colors.black),),
+                        fit: BoxFit.cover,
+                        child: Text(
+                        "${data['category']}",
+                        style: GoogleFonts.bebasNeue(
+                        fontSize: 24,
+                        color: Colors.black),),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
                       FittedBox
                       (
-                      fit: BoxFit.cover,
-                      child: Text(
-                      "${data['units']}",
-                      style: GoogleFonts.bebasNeue(
-                      fontSize: 24,
-                      color: Colors.black),),
+                        fit: BoxFit.cover,
+                        child: Text(
+                        "${data['units']}",
+                        style: GoogleFonts.bebasNeue(
+                        fontSize: 24,
+                        color: Colors.black),),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
                       FittedBox
                       (
-                      fit: BoxFit.cover,
-                      child: Text(
-                      "${data['unitOfMeasurement']}",
-                      style: GoogleFonts.bebasNeue(
-                      fontSize: 24,
-                      color: Colors.black),),
+                        fit: BoxFit.cover,
+                        child: Text(
+                        "${data['unitOfMeasurement']}",
+                        style: GoogleFonts.bebasNeue(
+                        fontSize: 24,
+                        color: Colors.black),),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
                       FittedBox
                       (
-                      fit: BoxFit.cover,
-                      child: Text(
-                      "${data['price']}",
-                      style: GoogleFonts.bebasNeue(
-                      fontSize: 24,
-                      color: Colors.black),),
+                        fit: BoxFit.cover,
+                        child: Text(
+                        "${data['price']}",
+                        style: GoogleFonts.bebasNeue(
+                        fontSize: 24,
+                        color: Colors.black),),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
                       FittedBox
                       (
-                      fit: BoxFit.cover,
-                      child: Text(
-                      "R${ double.parse((data['pricePerUnitOfMeasurement']).toStringAsFixed(2))}/${data['unitOfMeasurement']}",
-                      style: GoogleFonts.bebasNeue(
-                      fontSize: 24,
-                      color: Colors.black),),
+                        fit: BoxFit.cover,
+                        child: Text(
+                        "R${ double.parse((data['pricePerUnitOfMeasurement']).toStringAsFixed(2))}/${data['unitOfMeasurement']}",
+                        style: GoogleFonts.bebasNeue(
+                        fontSize: 24,
+                        color: Colors.black),),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
                       ],
                       ),
                       ],
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.002,),
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
                         SizedBox
                           (
                           width: MediaQuery.of(context).size.width * 0.45,
                           child: ElevatedButton(onPressed: ()
                           {
-                            removeProduct(data['barcode'], data['userID']);
+                            // Navigator.of(context).push(MaterialPageRoute(builder: (context)=> PriceCheckProducts(
+                            //   currentUser: Users(id: "testing",email: "",password: "", username: "" ),)));
                           },
                             style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.greenAccent),),
                             child:
                             FittedBox(
                               fit: BoxFit.cover,
-                              child: Text("Remove Product from list",
+                              child: Text("Edit Product",
                                 style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.black),
                               ),
                             ),
@@ -322,9 +322,9 @@ class _PriceCheckProductsState extends State<PriceCheckProducts> {
                         ),
                         SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
                       ],
-
                       ),
-                      )
+                      ),
+
                         ],
                       );
 
@@ -360,20 +360,6 @@ class _PriceCheckProductsState extends State<PriceCheckProducts> {
   }
 }
 
-Future<void> removeProduct(String barcode, String userID)
-async {
-  var db = FirebaseFirestore.instance;
-  var query = FirebaseFirestore.instance.collection("ActiveProducts").where('barcode', isEqualTo: barcode).where('userID', isEqualTo: userID).limit(1);
-  try
-  {
-    String? productDocID = await query.get().then((value) => value.docs.firstOrNull?.id);
-    db.collection("ActiveProducts").doc(productDocID).delete();
-  }
-      catch(e)
-      {}
-
-
-}
 
 void getUser(Users currentUser)
 {
