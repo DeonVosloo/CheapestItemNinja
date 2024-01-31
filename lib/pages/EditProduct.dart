@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../classes/Users.dart';
+import 'Home.dart';
+import 'PriceCheckProducts.dart';
 
 
 double convertedUnits=0;
@@ -27,22 +29,12 @@ class EditProduct extends StatefulWidget {
 }
 
 class _EditProductState extends State<EditProduct> {
+  TextEditingController productNameController = TextEditingController();
+  TextEditingController unitOfMeasurementController = TextEditingController();
+  TextEditingController unitsController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-
-
-
-    TextEditingController productNameController = TextEditingController();
-    TextEditingController unitOfMeasurementController = TextEditingController();
-    TextEditingController unitsController = TextEditingController();
-    TextEditingController priceController = TextEditingController();
-
-    productNameController.text = widget.product.name;
-    unitsController.text = "${widget.product.units}";
-    priceController.text = "${widget.product.price}";
-    unitOfMeasurementController.text = widget.product.unitOfMeasurement;
-
-
 
     return Scaffold
       (
@@ -71,7 +63,19 @@ class _EditProductState extends State<EditProduct> {
                     (
                     fit: BoxFit.contain,
                     child: Text(
-                      "View All products",
+                      "Price comparison",
+                      style: GoogleFonts.bebasNeue(
+                          fontSize: 32,
+                          color: Colors.black),),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 2,
+                  child: FittedBox
+                    (
+                    fit: BoxFit.contain,
+                    child: Text(
+                      "View All Products",
                       style: GoogleFonts.bebasNeue(
                           fontSize: 32,
                           color: Colors.black),),
@@ -83,11 +87,18 @@ class _EditProductState extends State<EditProduct> {
             {
               if(value == 0)
               {
-
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen(
+                    user: widget.currentUser)));
               }
               else if(value == 1)
               {
-
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> PriceCheckProducts(
+                    currentUser: widget.currentUser)));
+              }
+              else if(value == 2)
+              {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllProducts(
+                    currentUser: widget.currentUser)));
               }
 
             },
@@ -335,7 +346,6 @@ void updateProduct(
   }
   catch(e)
   {
-    print(e);
   }
 
 }

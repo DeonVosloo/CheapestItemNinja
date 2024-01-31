@@ -1,38 +1,32 @@
-import 'package:cheapest_item_ninja/classes/ActiveProduct.dart';
-import 'package:cheapest_item_ninja/classes/Categories.dart';
-import 'package:cheapest_item_ninja/classes/Products.dart';
 import 'package:cheapest_item_ninja/pages/Home.dart';
+import 'package:cheapest_item_ninja/pages/login.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../classes/Users.dart';
 
-List<Categories> categories=[];
-double convertedUnits=0;
-String? selectedCategory ="not selected";
-String? selectUnitOfMeasurement;
-TextEditingController unitOfMeasurementController = TextEditingController();
-bool validNewUser= true;
+bool validNewUser= false;
+String doc="";
 
 class RegisterUser extends StatefulWidget {
   const RegisterUser({super.key});
 
   @override
-  State<RegisterUser> createState() => _AddProductState();
+  State<RegisterUser> createState() => _RegisterUserState();
 
 }
 
-class _AddProductState extends State<RegisterUser> {
+class _RegisterUserState extends State<RegisterUser> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController1 = TextEditingController();
+  TextEditingController passwordController2 = TextEditingController();
   @override
   Widget build(BuildContext context) {
 
-    TextEditingController usernameController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController1 = TextEditingController();
-    TextEditingController passwordController2 = TextEditingController();
+
 
 
     return Scaffold
@@ -202,9 +196,6 @@ class _AddProductState extends State<RegisterUser> {
                             child: ElevatedButton
                               (
                               onPressed: (){
-                                // addProductToDB(widget.barcode, selectedCategory as String,
-                                // productNameController.text, double.parse(unitsController.text), double.parse(priceController.text)
-                                // , widget.currentUser.id);
 
                                 if(passwordController1.text == passwordController2.text)
                                   {
@@ -213,7 +204,33 @@ class _AddProductState extends State<RegisterUser> {
                                     if(user.checkValidEmail(user.email) == true)
                                       {
                                         registerNewUser(user);
-                                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen(user: user,)));
+
+                                        Future.delayed(const Duration(seconds: 3), () {
+                                          if(validNewUser == true)
+                                          {
+                                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Login()));
+                                          }
+                                          else if(validNewUser == false)
+                                          {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text("Error"),
+                                                  content: const Text("Email or username already taken"),
+                                                  actions: [
+                                                    TextButton(
+                                                      child: const Text("OK"),
+                                                      onPressed: () {Navigator.pop(context);},
+                                                    )
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          }
+                                        });
+
+
                                       }
                                     else
                                     {
@@ -226,7 +243,7 @@ class _AddProductState extends State<RegisterUser> {
                                             actions: [
                                               TextButton(
                                                 child: const Text("OK"),
-                                                onPressed: () { },
+                                                onPressed: () {Navigator.pop(context);},
                                               )
                                             ],
                                           );
@@ -246,7 +263,7 @@ class _AddProductState extends State<RegisterUser> {
                                         actions: [
                                           TextButton(
                                           child: const Text("OK"),
-                                          onPressed: () { },
+                                          onPressed: () {Navigator.pop(context);},
                                           )
                                         ],
                                       );
@@ -260,7 +277,7 @@ class _AddProductState extends State<RegisterUser> {
                               child:
                               FittedBox(
                                 fit: BoxFit.scaleDown,
-                                child: Text("Add Product",
+                                child: Text("Register User",
                                   style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.black),
                                 ),
                               ),
@@ -292,10 +309,47 @@ void registerNewUser
   final userRef = db.collection('Users');
   final userQueryUsername = userRef.where("username", isEqualTo: user.username).limit(1);
   final userQueryEmail = userRef.where("email", isEqualTo: user.email).limit(1);
-  String? userDocID;
+  String? usernameDocID;
+  String? emailDocID;
 
-  validNewUser=true;
-  userRef.doc().set(user.toFirestore());
+  try
+  {
+    usernameDocID = await userQueryUsername.get().then((value) => value.docs.firstOrNull?.id);
+    emailDocID = await userQueryEmail.get().then((value) => value.docs.firstOrNull?.id);
+    //doc= userDocID!;
+    final usernameRef = db.collection("Users").doc(usernameDocID).withConverter(
+      fromFirestore: Users.fromFirestore,
+      toFirestore: (Users user, _) => user.toFirestore(),
+    );
+
+    final emailRef = db.collection("Users").doc(emailDocID).withConverter(
+      fromFirestore: Users.fromFirestore,
+      toFirestore: (Users user, _) => user.toFirestore(),
+    );
+
+    final usernameDocSnap = await usernameRef.get();
+    final emailDocSnap = await emailRef.get();
+    final userTemp1 = usernameDocSnap.data();
+    final userTemp2 = emailDocSnap.data();
+    if (userTemp1 != null || userTemp2 !=null)
+    {
+      if(user.username == userTemp1!.username || user.email == userTemp2!.email)
+      {
+        validNewUser= false;
+      }
+      else
+      {
+        validNewUser=true;
+        userRef.doc().set(user.toFirestore());
+      }
+    }
+    else
+    {
+      validNewUser=true;
+      userRef.doc().set(user.toFirestore());
+    }
+  }
+  catch(e){}
 
 
 }

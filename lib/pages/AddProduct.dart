@@ -3,6 +3,7 @@ import 'package:cheapest_item_ninja/classes/Categories.dart';
 import 'package:cheapest_item_ninja/classes/Products.dart';
 import 'package:cheapest_item_ninja/pages/Home.dart';
 import 'package:cheapest_item_ninja/pages/PriceCheckProducts.dart';
+import 'package:cheapest_item_ninja/pages/ViewAllProducts.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +30,13 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
+
+  TextEditingController productNameController = TextEditingController();
+  TextEditingController categoriesController = TextEditingController();
+  TextEditingController unitsController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-
-    TextEditingController productNameController = TextEditingController();
-    TextEditingController categoriesController = TextEditingController();
-    TextEditingController unitsController = TextEditingController();
-    TextEditingController priceController = TextEditingController();
 
     categories = widget.categoriesReceived;
 
@@ -66,7 +67,19 @@ class _AddProductState extends State<AddProduct> {
                       (
                       fit: BoxFit.contain,
                       child: Text(
-                        "View All products",
+                        "Price comparison",
+                        style: GoogleFonts.bebasNeue(
+                            fontSize: 32,
+                            color: Colors.black),),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    child: FittedBox
+                      (
+                      fit: BoxFit.contain,
+                      child: Text(
+                        "View All Products",
                         style: GoogleFonts.bebasNeue(
                             fontSize: 32,
                             color: Colors.black),),
@@ -78,12 +91,19 @@ class _AddProductState extends State<AddProduct> {
               {
                 if(value == 0)
                 {
-
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen(
+                      user: widget.currentUser)));
                 }
                 else if(value == 1)
                 {
-
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> PriceCheckProducts(
+                      currentUser: widget.currentUser)));
                 }
+                else if(value == 2)
+                  {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllProducts(
+                        currentUser: widget.currentUser)));
+                  }
 
               },
             ),
@@ -342,17 +362,17 @@ void addProductToDB(String? barcode,
   final activeProductsRef = db.collection('ActiveProducts');
   final activeProductsQuery = activeProductsRef.where("barcode", isEqualTo: barcode).where("userID", isEqualTo: userID).limit(1);
   String? activeProductsDocID;
-  final PricePerUoM = calculatePricePerUoM(units,
+  final pricePerUoM = calculatePricePerUoM(units,
       price, unitOfMeasurementController.text);
 
   final Products product = Products(price: price,
-      pricePerUnitOfMeasurement: PricePerUoM,
+      pricePerUnitOfMeasurement: pricePerUoM,
       category: category, name: productName,
       units: units, unitOfMeasurement: selectUnitOfMeasurement as String,
       barcode: barcode as String);
 
   final ActiveProduct activeProduct = ActiveProduct(price: price,
-      pricePerUnitOfMeasurement: PricePerUoM,
+      pricePerUnitOfMeasurement: pricePerUoM,
       category: category, name: productName,
       units: units, unitOfMeasurement: selectUnitOfMeasurement as String,
       barcode: barcode, userID: userID, isActive: true);
@@ -368,7 +388,7 @@ void addProductToDB(String? barcode,
     {
       activeProductsDocID = await activeProductsQuery.get().then((value) => value.docs.firstOrNull?.id );
       activeProductsRef.doc(activeProductsDocID).set(activeProduct.toFirestore());
-      productPassed = true;
+      activeProductPassed = true;
       return;
     }
     catch(e)

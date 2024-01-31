@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../classes/Categories.dart';
 import '../classes/Users.dart';
 import 'Home.dart';
+import 'PriceCheckProducts.dart';
 
 List<Categories> categories= [];
 class ViewAllProducts extends StatefulWidget {
@@ -13,10 +14,10 @@ class ViewAllProducts extends StatefulWidget {
   const ViewAllProducts({super.key, required this.currentUser});
 
   @override
-  State<ViewAllProducts> createState() => _PriceCheckProductsState();
+  State<ViewAllProducts> createState() => _ViewAllProductsState();
 }
 
-class _PriceCheckProductsState extends State<ViewAllProducts> {
+class _ViewAllProductsState extends State<ViewAllProducts> {
 
 
   final Stream<QuerySnapshot> activeProductsStream =
@@ -34,10 +35,7 @@ class _PriceCheckProductsState extends State<ViewAllProducts> {
         (
         centerTitle: true,
         actions: [
-        FittedBox
-          (
-          fit: BoxFit.cover,
-          child: PopupMenuButton(
+          PopupMenuButton(
             itemBuilder: (context)
             {
               return[
@@ -59,7 +57,7 @@ class _PriceCheckProductsState extends State<ViewAllProducts> {
                     (
                     fit: BoxFit.contain,
                     child: Text(
-                      "View All products",
+                      "Price comparison",
                       style: GoogleFonts.bebasNeue(
                           fontSize: 32,
                           color: Colors.black),),
@@ -71,16 +69,18 @@ class _PriceCheckProductsState extends State<ViewAllProducts> {
             {
               if(value == 0)
               {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen(user: user)));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen(
+                    user: widget.currentUser)));
               }
               else if(value == 1)
               {
-
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> PriceCheckProducts(
+                    currentUser: widget.currentUser)));
               }
+
 
             },
           ),
-        )
         ],
 
         leading: FittedBox
@@ -347,7 +347,6 @@ class _PriceCheckProductsState extends State<ViewAllProducts> {
     );
   }
 }
-
 
 Users getUser(Users currentUser)
 {

@@ -2,10 +2,11 @@ import 'package:cheapest_item_ninja/pages/BarcodeScanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../classes/ActiveProduct.dart';
 import '../classes/Users.dart';
 import 'Home.dart';
+import 'ViewAllProducts.dart';
 
+String? userID;
 class PriceCheckProducts extends StatefulWidget {
   final Users currentUser;
   const PriceCheckProducts({super.key, required this.currentUser});
@@ -16,13 +17,16 @@ class PriceCheckProducts extends StatefulWidget {
 
 class _PriceCheckProductsState extends State<PriceCheckProducts> {
 
-  final Stream<QuerySnapshot> activeProductsStream =
-  FirebaseFirestore.instance.collection('ActiveProducts').snapshots();
+
 
   @override
   Widget build(BuildContext context) {
 
+
     Users user = getUser(widget.currentUser);
+    userID= user.id;
+    Stream<QuerySnapshot> activeProductsStream = getProductStream(userID!);
+
 
 
     // ActiveProduct prod = ActiveProduct(price: 97,
@@ -33,10 +37,7 @@ class _PriceCheckProductsState extends State<PriceCheckProducts> {
         (
         centerTitle: true,
         actions: [
-        FittedBox
-          (
-          fit: BoxFit.cover,
-          child: PopupMenuButton(
+          PopupMenuButton(
             itemBuilder: (context)
             {
               return[
@@ -52,13 +53,14 @@ class _PriceCheckProductsState extends State<PriceCheckProducts> {
                           color: Colors.black),),
                   ),
                 ),
+
                 PopupMenuItem(
                   value: 1,
                   child: FittedBox
                     (
                     fit: BoxFit.contain,
                     child: Text(
-                      "View All products",
+                      "View All Products",
                       style: GoogleFonts.bebasNeue(
                           fontSize: 32,
                           color: Colors.black),),
@@ -70,18 +72,18 @@ class _PriceCheckProductsState extends State<PriceCheckProducts> {
             {
               if(value == 0)
               {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen(user: user,)));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen(
+                    user: widget.currentUser)));
               }
               else if(value == 1)
               {
-
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllProducts(
+                    currentUser: widget.currentUser)));
               }
 
             },
           ),
-        )
         ],
-
         leading: FittedBox
           (
           fit:BoxFit.cover,
@@ -378,4 +380,11 @@ async {
 Users getUser(Users currentUser)
 {
   return currentUser;
+}
+
+Stream<QuerySnapshot> getProductStream(String userID)
+{
+  final Stream<QuerySnapshot> activeProductsStream =
+  FirebaseFirestore.instance.collection('ActiveProducts').where("userID", isEqualTo: userID).snapshots();
+  return activeProductsStream;
 }

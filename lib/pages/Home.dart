@@ -1,4 +1,3 @@
-import 'package:cheapest_item_ninja/classes/ActiveProduct.dart';
 import 'package:cheapest_item_ninja/classes/Users.dart';
 import 'package:cheapest_item_ninja/pages/PriceCheckProducts.dart';
 import 'package:cheapest_item_ninja/pages/ViewAllProducts.dart';
@@ -18,7 +17,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> names;
     return Scaffold(
         appBar:AppBar
           (
@@ -37,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         (
                         fit: BoxFit.contain,
                         child: Text(
-                          "Price Check Ninja",
+                          "Price comparison",
                           style: GoogleFonts.bebasNeue(
                               fontSize: 32,
                               color: Colors.black),),
@@ -101,13 +99,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.25,),
+
                   SizedBox
                     (
                     width: MediaQuery.of(context).size.width * 0.75,
                     child: ElevatedButton(onPressed: ()
                     {
                         Navigator.of(context).push(MaterialPageRoute(builder: (context)=> PriceCheckProducts(
-                          currentUser: Users(id: "testing",email: "",password: "", username: "" ),)));
+                          currentUser: widget.user)));
                       },
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.greenAccent),),
                       child:
@@ -128,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ElevatedButton(onPressed: ()
                     {
                       Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllProducts(
-                        currentUser: Users(id: "testing",email: "",password: "", username: "" ),)));
+                        currentUser: widget.user,)));
                     },
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.greenAccent),),
                       child:
@@ -154,36 +153,4 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class CustomCard extends StatelessWidget {
-  final String _label;
-  final Widget _viewPage;
-  final bool featureCompleted;
-
-  const CustomCard(this._label, this._viewPage, {super.key, this.featureCompleted = true});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      margin: const EdgeInsets.only(bottom: 10),
-      child: ListTile(
-        tileColor: Theme.of(context).primaryColor,
-        title: Text(
-          _label,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        onTap: () {
-          if (!featureCompleted) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content:
-                Text('This feature has not been implemented yet')));
-          } else {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => _viewPage));
-          }
-        },
-      ),
-    );
-  }
-}
 

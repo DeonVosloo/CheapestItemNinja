@@ -49,9 +49,9 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                builder: (context) =>
                    Image(image: MemoryImage(image)),
              );
-             Future.delayed(const Duration(seconds: 5), () {
+             Future.delayed(const Duration(seconds: 1), () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AddProduct(barcode: barcodes.first.rawValue,
-                currentUser: Users(id: "testing",username: "testing", password: "test", email: "test"),
+                currentUser: widget.user,
                 categoriesReceived: categories,)));
                //Navigator.pop(context,barcodes);
              });
