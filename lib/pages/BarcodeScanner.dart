@@ -53,7 +53,6 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
               Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AddProduct(barcode: barcodes.first.rawValue,
                 currentUser: widget.user,
                 categoriesReceived: categories,)));
-               //Navigator.pop(context,barcodes);
              });
            }
          },
