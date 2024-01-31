@@ -104,7 +104,6 @@ class _EditProductState extends State<EditProduct> {
             },
           ),
         ],
-        //titleTextStyle: GoogleFonts.bebasNeue(fontSize: 36),
         title: FittedBox
           (
           fit: BoxFit.scaleDown,
