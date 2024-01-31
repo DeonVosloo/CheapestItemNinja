@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
-
-   const HomeScreen({super.key});
+final Users user;
+   const HomeScreen({super.key, required this.user});
 
 
   @override
@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         (
                         fit: BoxFit.contain,
                         child: Text(
-                          "Price Check Products",
+                          "Price Check Ninja",
                           style: GoogleFonts.bebasNeue(
                               fontSize: 32,
                               color: Colors.black),),

@@ -2,6 +2,7 @@ import 'package:cheapest_item_ninja/classes/ActiveProduct.dart';
 import 'package:cheapest_item_ninja/classes/Categories.dart';
 import 'package:cheapest_item_ninja/classes/Products.dart';
 import 'package:cheapest_item_ninja/pages/Home.dart';
+import 'package:cheapest_item_ninja/pages/PriceCheckProducts.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +19,9 @@ TextEditingController unitOfMeasurementController = TextEditingController();
 
 class AddProduct extends StatefulWidget {
   final String? barcode;
-  final Users user;
+  final Users currentUser;
   final List<Categories> categoriesReceived;
-  const AddProduct({super.key, required this.barcode, required this.user,required this.categoriesReceived});
+  const AddProduct({super.key, required this.barcode, required this.currentUser,required this.categoriesReceived});
 
   @override
   State<AddProduct> createState() => _AddProductState();
@@ -284,9 +285,9 @@ class _AddProductState extends State<AddProduct> {
                               (
                               onPressed: (){addProductToDB(widget.barcode, selectedCategory as String,
                                 productNameController.text, double.parse(unitsController.text), double.parse(priceController.text)
-                                , widget.user.id);
+                                , widget.currentUser.id);
 
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const HomeScreen()));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> PriceCheckProducts(currentUser: widget.currentUser)));
 
                               },
 

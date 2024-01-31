@@ -1,6 +1,6 @@
 import 'package:cheapest_item_ninja/classes/Categories.dart';
 import 'package:cheapest_item_ninja/classes/Products.dart';
-import 'package:cheapest_item_ninja/pages/Home.dart';
+import 'package:cheapest_item_ninja/pages/ViewAllProducts.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -270,7 +270,7 @@ class _EditProductState extends State<EditProduct> {
                             onPressed: (){updateProduct(productNameController.text, double.parse(unitsController.text), double.parse(priceController.text)
                                 , widget.currentUser.id, widget.product);
 
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const HomeScreen()));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>  ViewAllProducts(currentUser: widget.currentUser)));
 
                             },
 

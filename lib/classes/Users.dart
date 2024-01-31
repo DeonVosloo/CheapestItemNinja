@@ -1,5 +1,7 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:encrypt/encrypt.dart';
+import 'package:crypto/crypto.dart';
 
 class Users
 {
@@ -32,25 +34,22 @@ class Users
       "email": email,
     };
   }
+  String encryptPassword(String password)
+  {
+    var salt = 'UVocjgjgXg8P7zIsC93kKlRU8sPbTBhsAMFLnLUPDRYFIWAk';
+    var saltedPassword = salt + password;
+    var bytes = utf8.encode(saltedPassword);
+    var hash = sha256.convert(bytes);
+    return hash.toString();
+  }
 
+  bool checkValidEmail(String email)
+  {
+    final bool emailValid =
+    RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+    return emailValid;
+  }
 
 }
 
-String encryptPassword(String password)
-{
-  final key = Key.fromUtf8('awdawd245upcvkxadsklklsado777jcs');
-  final iv = IV.fromLength(16);
-
-  final encrypter = Encrypter(AES(key));
-
-  final Encrypted encrypted = encrypter.encrypt(password, iv: iv);
-  return encrypted.toString();
-}
-
-bool checkValidEmail(String email)
-{
-  final bool emailValid =
-  RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-      .hasMatch(email);
-  return emailValid;
-}

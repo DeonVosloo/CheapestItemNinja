@@ -70,7 +70,7 @@ class _PriceCheckProductsState extends State<PriceCheckProducts> {
             {
               if(value == 0)
               {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const HomeScreen()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen(user: user,)));
               }
               else if(value == 1)
               {
@@ -340,7 +340,7 @@ class _PriceCheckProductsState extends State<PriceCheckProducts> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: ()
         {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> TestBarcodeScanner()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> BarcodeScanner(user: widget.currentUser,)));
         },
         tooltip: 'add product',
         label: FittedBox

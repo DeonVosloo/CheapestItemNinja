@@ -1,11 +1,13 @@
-import 'package:cheapest_item_ninja/pages/BarcodeScanner.dart';
+import 'package:cheapest_item_ninja/classes/Products.dart';
+import 'package:cheapest_item_ninja/pages/EditProduct.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../classes/ActiveProduct.dart';
+import '../classes/Categories.dart';
 import '../classes/Users.dart';
 import 'Home.dart';
 
+List<Categories> categories= [];
 class ViewAllProducts extends StatefulWidget {
   final Users currentUser;
   const ViewAllProducts({super.key, required this.currentUser});
@@ -18,7 +20,7 @@ class _PriceCheckProductsState extends State<ViewAllProducts> {
 
 
   final Stream<QuerySnapshot> activeProductsStream =
-  FirebaseFirestore.instance.collection('ActiveProducts').snapshots();
+  FirebaseFirestore.instance.collection('Products').snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +71,7 @@ class _PriceCheckProductsState extends State<ViewAllProducts> {
             {
               if(value == 0)
               {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const HomeScreen()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen(user: user)));
               }
               else if(value == 1)
               {
@@ -306,8 +308,14 @@ class _PriceCheckProductsState extends State<ViewAllProducts> {
                           width: MediaQuery.of(context).size.width * 0.45,
                           child: ElevatedButton(onPressed: ()
                           {
-                            // Navigator.of(context).push(MaterialPageRoute(builder: (context)=> PriceCheckProducts(
-                            //   currentUser: Users(id: "testing",email: "",password: "", username: "" ),)));
+
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=> EditProduct(
+                              currentUser: widget.currentUser, barcode: data['barcode'], product:
+                            Products(barcode: data['barcode'], category: data['category'],
+                                unitOfMeasurement: data['unitOfMeasurement'], name: data['name'],
+                                price: data['price'], pricePerUnitOfMeasurement: data['pricePerUnitOfMeasurement'],
+                                units:  data['units']))));
+
                           },
                             style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.greenAccent),),
                             child:
@@ -335,25 +343,6 @@ class _PriceCheckProductsState extends State<ViewAllProducts> {
               ),
             ],
           )
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: ()
-        {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> TestBarcodeScanner()));
-        },
-        tooltip: 'add product',
-        label: FittedBox
-          (
-          fit: BoxFit.scaleDown,
-          child: Text(
-            "Add Product",
-            style: GoogleFonts.bebasNeue(
-                fontSize: 24,
-                color: Colors.black),),
-        ),
-        icon: const Icon(Icons.add),
-        backgroundColor: Colors.greenAccent,
-
       ),
     );
   }
