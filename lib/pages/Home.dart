@@ -22,53 +22,51 @@ class _HomeScreenState extends State<HomeScreen> {
           (
           centerTitle: true,
           actions: [
-            FittedBox
-              (
-              fit: BoxFit.cover,
-              child: PopupMenuButton(
-                itemBuilder: (context)
-                {
-                  return[
-                    PopupMenuItem(
-                      value: 0,
-                      child: FittedBox
-                        (
-                        fit: BoxFit.contain,
-                        child: Text(
-                          "Price comparison",
-                          style: GoogleFonts.bebasNeue(
-                              fontSize: 32,
-                              color: Colors.black),),
-                      ),
+            PopupMenuButton(
+              itemBuilder: (context)
+              {
+                return[
+                  PopupMenuItem(
+                    value: 0,
+                    child: FittedBox
+                      (
+                      fit: BoxFit.contain,
+                      child: Text(
+                        "Price comparison",
+                        style: GoogleFonts.bebasNeue(
+                            fontSize: 32,
+                            color: Colors.black),),
                     ),
-                    PopupMenuItem(
-                      value: 1,
-                      child: FittedBox
-                        (
-                        fit: BoxFit.contain,
-                        child: Text(
-                          "View All products",
-                          style: GoogleFonts.bebasNeue(
-                              fontSize: 32,
-                              color: Colors.black),),
-                      ),
+                  ),
+                  PopupMenuItem(
+                    value: 1,
+                    child: FittedBox
+                      (
+                      fit: BoxFit.contain,
+                      child: Text(
+                        "View All Products",
+                        style: GoogleFonts.bebasNeue(
+                            fontSize: 32,
+                            color: Colors.black),),
                     ),
-                  ];
-                },
-                onSelected: (value)
+                  ),
+                ];
+              },
+              onSelected: (value)
+              {
+                if(value == 0)
                 {
-                  if(value == 0)
-                  {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> PriceCheckProducts(
+                      currentUser: widget.user)));
+                }
+                else if(value == 1)
+                {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllProducts(
+                      currentUser: widget.user)));
+                }
 
-                  }
-                  else if(value == 1)
-                  {
-
-                  }
-
-                },
-              ),
-            )
+              },
+            ),
           ],
 
           title: FittedBox
@@ -139,11 +137,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-
-
-                  //CustomCard("Barcode Scanning Test", TestBarcodeScanner()),
-
-
                 ],
               ),
             ],

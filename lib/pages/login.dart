@@ -29,11 +29,10 @@ class _LoginState extends State<Login> {
       (
       appBar:AppBar
         (
-        //titleTextStyle: GoogleFonts.bebasNeue(fontSize: 36),
         title: FittedBox
           (
           fit: BoxFit.scaleDown,
-          child: Text("Login",style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.black),),
+          child: Text("Price Check Ninja",style: GoogleFonts.bebasNeue(fontSize: 36, color: Colors.black),),
         ),
         backgroundColor: Colors.greenAccent[400],
       ),
@@ -80,7 +79,7 @@ class _LoginState extends State<Login> {
                           (
                           fit: BoxFit.contain,
                           child: Text(
-                            "user Login",
+                            "Ninja Login",
                             style: GoogleFonts.bebasNeue(
                                 fontSize: 32,
                                 color: Colors.black),),
